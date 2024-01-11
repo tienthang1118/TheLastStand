@@ -81,6 +81,19 @@ public class AbilitiesManager : MonoBehaviour
             case Abilities.IncreaseDMG:
                 playerStats.IncreaseDMG(selectedUpgradeData.StatIncreasePercent);
                 break;
+            case Abilities.IncreaseBLOOD_DMG:
+                playerStats.BloodDamge += selectedUpgradeData.StatIncreasePercent;
+                break;
+            case Abilities.IncreaseGUN:
+                playerStats.GunAmount += (int)selectedUpgradeData.StatIncreasePercent;
+                if(playerStats.GunAmount == 5)
+                {
+                    upgrades.RemoveAt(upgrades.Count - 1);
+                }
+                break;
+            case Abilities.IncreaseBULLET_BOUNCE:
+                playerStats.BulletBounceAmount += (int)selectedUpgradeData.StatIncreasePercent;
+                break;
         }
     }
 }

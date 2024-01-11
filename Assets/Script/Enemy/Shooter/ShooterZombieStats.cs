@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShooterZombieStats : EnemyStats
+public class ShooterZombieStats : HumanoidStats
 {
     [Header("Attack range")]
     [SerializeField]

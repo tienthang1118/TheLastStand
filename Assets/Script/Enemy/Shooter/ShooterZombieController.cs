@@ -66,7 +66,7 @@ public class ShooterZombieController : MonoBehaviour
     }
     public void AnimationEventShootBullet()
     {
-        ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, bulletSpawnTransform.rotation, ObjectPoolManager.PoolType.GameObject);
+        ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, bulletSpawnTransform.rotation, ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(ShooterZombieStats.Damage);
         animationManager.PlayShootAnimation(false);
     }
     void SpawnBullet()

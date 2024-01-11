@@ -70,6 +70,7 @@ public class ObjectPoolManager : MonoBehaviour
         GameObject spawnableObj = pool.InactiveObjects.FirstOrDefault();
         if (spawnableObj == null)
         {
+            spawnableObj = Instantiate(objectToSpawn, parentTransform.position, parentTransform.rotation);
             spawnableObj.transform.SetParent(parentTransform);
         }
         else

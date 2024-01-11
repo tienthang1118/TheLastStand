@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyStats : MonoBehaviour
+/*public class EnemyStats : HumanoidStats
 {
-    /*[Header("Max health point")]
+    *//*[Header("Max health point")]
     [SerializeField]
-    private int maxHealthPoint;*/
+    private int maxHealthPoint;*//*
 
     [Header("Movement speed")]
     [SerializeField]
@@ -16,11 +16,11 @@ public class EnemyStats : MonoBehaviour
     [SerializeField]
     private int damage;
 
-    /*public int MaxHealthPoint
+    *//*public int MaxHealthPoint
     {
         get { return maxHealthPoint; }
         set { maxHealthPoint = value; }
-    }*/
+    }*//*
     public int Damage
     {
         get { return damage; }
@@ -31,4 +31,4 @@ public class EnemyStats : MonoBehaviour
         get { return movementSpeed; }
         set { movementSpeed = value; }
     }
-}
+}*/

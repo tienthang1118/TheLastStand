@@ -2,35 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealthManager : MonoBehaviour
+public class EnemyHealthManager : HumanoidHealthManager
 {
-    [Header("Enemy max health point")]
-    [SerializeField]
-    private int maxHealthPoint;
-    [SerializeField]
-    private int currentHealthPoint;
+    private ParticlesManager particlesManager;
+    private PlayerStats playerStats;
+    private BulletSpawner bulletSpawner;
+    private WaveManager waveManager;
+    protected override void Awake()
+    {
+        base.Awake();
+        particlesManager = FindAnyObjectByType<ParticlesManager>();
+        playerStats = FindAnyObjectByType<PlayerStats>();
+        bulletSpawner = FindAnyObjectByType<BulletSpawner>();
+        waveManager = FindAnyObjectByType<WaveManager>();
+    }
 
     private void OnEnable()
     {
-        currentHealthPoint = maxHealthPoint;
+        humanoidStats.CurrentHealthPoint = humanoidStats.MaxHealthPoint;
     }
-    // Start is called before the first frame update
-    void Start()
+    public override void Die()
     {
-
-    }
-    
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    public void TakeDamage(int damage)
-    {
-        currentHealthPoint -= damage;
-        if(currentHealthPoint <= 0)
+        waveManager.EnemyNumbers--;
+        particlesManager.PlayZombieDeathParticle(gameObject.transform);
+        for(int i = 0; i < playerStats.BulletBounceAmount; i++)
         {
-            ObjectPoolManager.ReturnObjectToPool(gameObject);
+            bulletSpawner.SpawnRandomBullet(playerStats.Damage, BulletType.PlayerBullet, transform.position);
         }
+        ObjectPoolManager.ReturnObjectToPool(gameObject);
     }
 }

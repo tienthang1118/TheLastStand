@@ -22,6 +22,7 @@ public class WaveManager : MonoBehaviour
 
     private AbilitiesManager abilitiesManager;
 
+    public int EnemyNumbers = 0;
     private void Awake()
     {
         enemiesSpawner = FindObjectOfType<EnemiesSpawner>();
@@ -44,9 +45,11 @@ public class WaveManager : MonoBehaviour
                 for (int i = 0; i < enemiesSetup.count; i++)
                 {
                     enemiesSpawner.SpawnZombie(enemiesSetup.prefab);
+                    EnemyNumbers++;
                     yield return new WaitForSeconds((waveDuration - breaktimeDuration) / currentWave.enemies.Length / enemiesSetup.count);
                 }
             }
+            yield return new WaitForSeconds(breaktimeDuration);
             StartCoroutine(abilitiesManager.ChooseAbility());
             currentWaveIndex++;
         }

@@ -11,8 +11,14 @@ public class AudioButtonn : BaseButton
     protected override void Start()
     {
         base.Start();
+        UpdateButtonImage();
     }
     protected override void OnClick()
+    {
+        ChangeButtonImage();
+        AudioListener.pause = !AudioListener.pause;
+    }
+    void ChangeButtonImage()
     {
         if (AudioListener.pause)
         {
@@ -23,6 +29,17 @@ public class AudioButtonn : BaseButton
         {
             gameObject.GetComponent<Image>().sprite = soundOffImg;
         }
-        AudioListener.pause = !AudioListener.pause;
+    }
+    void UpdateButtonImage()
+    {
+        if (!AudioListener.pause)
+        {
+            gameObject.GetComponent<Image>().sprite = soundOnImg;
+
+        }
+        else
+        {
+            gameObject.GetComponent<Image>().sprite = soundOffImg;
+        }
     }
 }

@@ -30,17 +30,23 @@ public class EnemiesSpawner : MonoBehaviour
     Vector3 SpawnPosition()
     {
         Vector3 position = new Vector3();
-        float f = Random.value > 0.5f ? 1f : -1f;
-        if(Random.value > 0.5f)
+        float sign;
+        do
         {
-            position.x = Random.Range(mainCameraTransform.position.x - spawnPositionX, mainCameraTransform.position.x + spawnPositionX);
-            position.z = mainCameraTransform.position.z + (spawnPositionZ * f);
+            sign = Random.value > 0.5f ? 1f : -1f;
+            if(Random.value > 0.5f)
+            {
+            
+                position.x = Random.Range(mainCameraTransform.position.x - spawnPositionX, mainCameraTransform.position.x + spawnPositionX);
+                position.z = mainCameraTransform.position.z + (spawnPositionZ * sign);
+            }
+            else
+            {
+                position.z = Random.Range(mainCameraTransform.position.z - spawnPositionZ, mainCameraTransform.position.z + spawnPositionZ);
+                position.x = mainCameraTransform.position.x + (spawnPositionX * sign);
+            }
         }
-        else
-        {
-            position.z = Random.Range(mainCameraTransform.position.z - spawnPositionZ, mainCameraTransform.position.z + spawnPositionZ);
-            position.x = mainCameraTransform.position.x + (spawnPositionX * f);
-        }
+        while (position.x > 50 || position.x < -50 || position.z > 50 || position.z < -50);
         return position;
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
@@ -17,10 +18,13 @@ public class PlayerShooting : MonoBehaviour
 
     private AudioManager audioManager;
 
+    private ParticlesManager particlesManager;
+
     private void Awake()
     {
         playerStats = GetComponent<PlayerStats>();
         audioManager = FindAnyObjectByType<AudioManager>();
+        particlesManager = FindAnyObjectByType<ParticlesManager>();
     }
     // Start is called before the first frame update
     void Start()
@@ -54,7 +58,36 @@ public class PlayerShooting : MonoBehaviour
         if (elapseReloadTime > playerStats.ReloadTime)
         {
             elapseReloadTime = 0;
-            ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, bulletSpawnTransform.rotation, ObjectPoolManager.PoolType.GameObject);
+            switch (playerStats.GunAmount)
+            {
+                case 1:
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, bulletSpawnTransform.rotation, ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    break;
+                case 2:
+                    ObjectPoolManager.SpawnObject(BulletPrefab, new Vector3(bulletSpawnTransform.position.x - 0.1f, bulletSpawnTransform.position.y, bulletSpawnTransform.position.z), bulletSpawnTransform.rotation, ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    ObjectPoolManager.SpawnObject(BulletPrefab, new Vector3(bulletSpawnTransform.position.x + 0.1f, bulletSpawnTransform.position.y, bulletSpawnTransform.position.z), bulletSpawnTransform.rotation, ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    break;
+                case 3:
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, bulletSpawnTransform.rotation, ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, transform.rotation * Quaternion.Euler(0, 15, 0), ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, transform.rotation * Quaternion.Euler(0, -15, 0), ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    break;
+                case 4:
+                    ObjectPoolManager.SpawnObject(BulletPrefab, new Vector3(bulletSpawnTransform.position.x - 0.1f, bulletSpawnTransform.position.y, bulletSpawnTransform.position.z), bulletSpawnTransform.rotation, ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    ObjectPoolManager.SpawnObject(BulletPrefab, new Vector3(bulletSpawnTransform.position.x + 0.1f, bulletSpawnTransform.position.y, bulletSpawnTransform.position.z), bulletSpawnTransform.rotation, ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, transform.rotation * Quaternion.Euler(0, 15, 0), ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, transform.rotation * Quaternion.Euler(0, -15, 0), ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    break;
+                case 5:
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, bulletSpawnTransform.rotation, ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, transform.rotation * Quaternion.Euler(0, 15, 0), ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, transform.rotation * Quaternion.Euler(0, -15, 0), ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, transform.rotation * Quaternion.Euler(0, 30, 0), ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    ObjectPoolManager.SpawnObject(BulletPrefab, bulletSpawnTransform.position, transform.rotation * Quaternion.Euler(0, -30, 0), ObjectPoolManager.PoolType.GameObject).GetComponent<Bullet>().SetBulletDamage(playerStats.Damage);
+                    break;
+
+            }
+            particlesManager.PlayShootParticle(bulletSpawnTransform);
             audioManager.PlayShootSound();
         }
     }

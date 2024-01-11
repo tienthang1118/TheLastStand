@@ -10,6 +10,9 @@ public class Bullet : MonoBehaviour
         PLAYER,
         SHOOTERZOMBIE
     }
+
+    private int bulletDamage;
+
     private Rigidbody bulletRigidbody;
 
     [Header("Shooter")]
@@ -32,19 +35,19 @@ public class Bullet : MonoBehaviour
 
     private TrailRenderer trailRenderer;
 
-    private PlayerStats playerStats;
-
-    private EnemyStats enemyStats;
-
     private AudioManager audioManager;
+
+    private ParticlesManager particlesManager;
+
+    private PlayerStats playerStats;
 
     private void Awake()
     {
         audioManager = FindAnyObjectByType<AudioManager>();
         playerStats = FindObjectOfType<PlayerStats>();
-        enemyStats = FindObjectOfType<EnemyStats>();
         trailRenderer = GetComponent<TrailRenderer>();
         bulletRigidbody = GetComponent<Rigidbody>();
+        particlesManager = FindAnyObjectByType<ParticlesManager>();
         elapseActiveTime = 0;
     }
     private void Start()
@@ -54,6 +57,7 @@ public class Bullet : MonoBehaviour
     private void Update()
     {
         UnactiveAfterTimeUp();
+        RaycastCheck();
     }
     private void OnEnable()
     {
@@ -87,7 +91,23 @@ public class Bullet : MonoBehaviour
     {
         DealDamage(other.gameObject);
     }
-    
+    void RaycastCheck()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(transform.position, transform.forward *-1, out hit, 1))
+        {
+            if(hit.transform.gameObject.tag == GameTags.ENEMY)
+            {
+                DealDamage(hit.transform.gameObject);
+            }
+        }
+    }
+
+    public void SetBulletDamage(int damage)
+    {
+        bulletDamage = damage;
+    }
+
     void DealDamage(GameObject target)
     {
         switch (target.tag)
@@ -96,14 +116,19 @@ public class Bullet : MonoBehaviour
                 if(shooter == SHOOTER.PLAYER)
                 {
                     UnactiveBullet();
-                    target.GetComponent<EnemyHealthManager>().TakeDamage(playerStats.ShootDamage);
+                    bulletDamage += (int)(playerStats.BloodDamge * target.GetComponent<HumanoidStats>().CurrentHealthPoint);
+                    target.GetComponent<HumanoidHealthManager>().TakeDamage(bulletDamage);
+                    particlesManager.PlayHitParticle(target.transform);
                     audioManager.PlayHitSound();
                 }
                 break;
             case GameTags.PLAYER:
-                UnactiveBullet();
-                target.GetComponent<PlayerHealthManager>().TakeDamage(enemyStats.Damage);
-                audioManager.PlayHitSound();
+                if (shooter != SHOOTER.PLAYER)
+                {
+                    UnactiveBullet();
+                    target.GetComponent<HumanoidHealthManager>().TakeDamage(bulletDamage);
+                    audioManager.PlayHitSound();
+                }
                 break;
         }
     }

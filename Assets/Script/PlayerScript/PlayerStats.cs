@@ -2,43 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStats : MonoBehaviour
+public class PlayerStats : HumanoidStats
 {
-    [Header("Player max health point")]
-    [SerializeField]
-    private int maxHealthPoint;
-
     [Header("Player shoot reload time")]
     [SerializeField]
     private float reloadTime;
 
-    [Header("Player shoot damage")]
     [SerializeField]
-    private int shootDamage;
+    private float bloodDamage = 0;
+    [SerializeField]
+    private int gunAmount = 1;
+    [SerializeField]
+    private int bulletBounceAmount = 0;
 
-    [Header("Player movement speed")]
-    [SerializeField]
-    private float movementSpeed;
-    
-    public int MaxHealthPoint
-    {
-        get { return maxHealthPoint; }
-        set { maxHealthPoint = value; }
-    }
     public float ReloadTime
     {
         get{ return reloadTime;}
         set{ reloadTime = value;}
     }
-    public int ShootDamage
+    public float BloodDamge
     {
-        get { return shootDamage; }
-        set { shootDamage = value; }
+        get { return bloodDamage; }
+        set { bloodDamage = value; }
     }
-    public float MovementSpeed
+    public int GunAmount
     {
-        get { return movementSpeed; }
-        set { movementSpeed = value; }
+        get { return gunAmount; }
+        set { gunAmount = value; }
+    }
+    public int BulletBounceAmount
+    {
+        get { return bulletBounceAmount; }
+        set { bulletBounceAmount = value; }
     }
     public void IncreaseATSD(float percent)
     {
@@ -46,6 +41,6 @@ public class PlayerStats : MonoBehaviour
     }
     public void IncreaseDMG(float percent)
     {
-        shootDamage = (int)(shootDamage * (1 + percent));
+        damage = (int)(damage * (1 + percent));
     }
 }

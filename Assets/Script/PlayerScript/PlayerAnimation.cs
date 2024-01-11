@@ -6,15 +6,11 @@ public class PlayerAnimation : MonoBehaviour
 {
     private Animator animator;
 
-    private void Awake()
+    private void Start()
     {
         animator = GetComponentInChildren<Animator>();
     }
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()

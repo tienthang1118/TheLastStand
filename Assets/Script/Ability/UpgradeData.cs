@@ -14,5 +14,8 @@ public class UpgradeData : ScriptableObject
 public enum Abilities
 {
     IncreaseATSD,
-    IncreaseDMG
+    IncreaseDMG,
+    IncreaseBLOOD_DMG,
+    IncreaseGUN,
+    IncreaseBULLET_BOUNCE
 }
